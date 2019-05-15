@@ -1,0 +1,23 @@
+{
+	"manifest_version": 2,
+	"name": "Taobao Converter",
+	"version": "1.0",
+	"description": "Taobao Mobile to Web link converter",
+
+	"browser_action": {
+		"default_popup": "popup.html"
+	},
+
+	"background": {
+		"scripts": ["eventPage.js"],
+		"persistent": false
+	},
+
+	"permissions": [
+		"contextMenus",
+		"storage"
+	]
+
+
+
+}
