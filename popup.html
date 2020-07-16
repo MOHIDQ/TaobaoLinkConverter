@@ -4,26 +4,41 @@
 	<head>
 
 
-		<title>TAOBAO CONVERTER</title>
+		<title>TAOBAO LINK CONVERTER</title>
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<!-- Latest compiled and minified CSS -->
+
+		<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 		
 
 	</head>
 
 	<body>
-		<h1 id = "top" >TAOBAO LINK CONVERTER</h1>
+		<h2 id = "top" class="text-success" >TAOBAO LINK CONVERTER</h2>
 
-		<input class = "inputLink" type="text" id="link" placeholder="Enter Link"> <br></br>
+		<!-- <input class = "inputLink" type="text" id="link" placeholder="Enter Link"> <br></br> -->
+		
+  		<textarea class="form-control" rows="7" cols= "0" id="link" placeholder = "Enter links here, comma seperate multiple links" style="resize: none;"></textarea> <br>
+  		<div style="text-align: center;" >
+			<button id = "convertButton" class="btn btn-success">CONVERT</button>
+			<button id = "clearButton" class="btn btn-danger">CLEAR</button>
+		</div>
+		<br>
+		<div id="newLinks" style="text-align: center;">
+			<a id = "linkTab" href = "">
+				<p id = "convertedUrl" style="color: #495BFF"></p>
+			</a>
+		</div>
 
-		<button id = "convertButton">CONVERT</button>
-		<button id = "clearButton">CLEAR</button>
-
-		<a id = "linkTab" href = "">
-			<h2 id = "convertedUrl" style="color: #495BFF"></h2>
-		</a>
-
-		<h3 id = "errorMessage"></h3>
+		<br>
+		<p id = "errorMessage" class="text-danger" style="text-align: center;"></p>
 		<script src="popup.js" ></script>
 	</body>
 

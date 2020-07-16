@@ -1,19 +1,19 @@
 body {
-    height: 300px;
-    width: 420px;
+	height: 300px;
+	width: 460px;
 }
 
-h1 {
-    text-align: center;
-    color: green;
+h2 {
+	text-align: center;
 }
+
 .inputLink {
-    width: 415px;
-    height: 20px;
-    font-size:15px
+	width: 415px; 
+	height: 20px; 
+	font-size:14px
 }
 
 
 ::placeholder {
-    color: green;
+	color: green;
 }

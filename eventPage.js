@@ -1,7 +1,7 @@
 //defining context menu properties
 let contextMenuItem = {
 	"id": "Tlink",
-	"title": "Go To New URL",
+	"title": "Go To " + "%s",
 	"contexts": ["selection"]
 }
 
@@ -11,6 +11,8 @@ function convertLink(preUrl) {
 }
 
 function goToLink(preUrl) {
+	let defaultLink = "https://item.taobao.com/item.htm?id="
+
 	//let newURL = convertLink(preUrl)
   	chrome.tabs.create({ url: convertLink(preUrl) })
   	//return newURL
