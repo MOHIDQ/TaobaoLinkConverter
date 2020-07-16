@@ -13,18 +13,41 @@ link.onclick = function() {
 	let preURL = document.getElementById('link').value
 	let id = "";
 
+	let mainDiv = document.getElementById("newLinks")
+	for(let i = 0; i < arrayLink.length; i++) {
+		if(!arrayLink[i].includes("id=")) {
+			let line_break = document.createElement("BR")
+			let newLink = document.createElement("button")
+			newLink.className = "btn btn-link text-danger"
+			newLink.innerText = arrayLink[i]
+			mainDiv.appendChild(newLink)
+			mainDiv.appendChild(line_break)
+		}
+		else {
+			let index = arrayLink[i].indexOf("id=") + 3
+			id = arrayLink[i].substring(index, index + 12)
+			let line_break = document.createElement("BR")
+			let newLink = document.createElement("button")
+			newLink.className = "btn btn-link"
+			newLink.innerText = defaultLink + id
+			mainDiv.appendChild(newLink)
+			mainDiv.appendChild(line_break)
+		}
+		
+	}
+
 	console.log(arrayLink)
 
 	//if link entered does not contain an id query
 	if(!preURL.includes("id=")) {
-		document.getElementById('errorMessage').textContent = "Enter Valid Link"
+		//document.getElementById('errorMessage').textContent = "Enter Valid Link"
 	}
 	else {
-		document.getElementById('errorMessage').textContent = ""
+		//document.getElementById('errorMessage').textContent = ""
 
-		let index = preURL.indexOf("id=") + 3
-		id = preURL.substring(index, index + 12)
-		document.getElementById('convertedUrl').textContent = defaultLink + id;
+		//let index = preURL.indexOf("id=") + 3
+		//id = preURL.substring(index, index + 12)
+		//document.getElementById('convertedUrl').textContent = defaultLink + id;
 	}
 
 	document.getElementById('link').value = ''
@@ -58,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
    	//	chrome.tabs.create({active: true, url: y.textContent});
    //});
 })
-
+//https://world.taobao.com/item/547456053621.htm?fromSite=main
 function openIndex() {
  chrome.tabs.create({active: true, url: control.textContent});
 }
