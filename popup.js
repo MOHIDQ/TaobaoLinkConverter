@@ -1,87 +1,85 @@
-let link = document.getElementById('convertButton')
+let convertLink = document.getElementById('convertButton')
 let clear = document.getElementById('clearButton')
+//getting the converted links that were stored in the bundle for when the extensions closed and reopens
 chrome.storage.sync.get(['userText'], function(result) {
+	console.log(result)
+	let mainDiv = document.getElementById("newLinks")
+	for(let i = 0; i < result.userText.length; i++) {
+		let link = document.createElement("a")
+		link.href = result.userText[i]
+		link.textContent = result.userText[i]
+		link.className = "btn btn-link"
+		link.id = "link_" + i
+		link.addEventListener("click", function() {
+			chrome.tabs.create({active: true, url: link.textContent});
+		})
 
-	document.getElementById('convertedUrl').textContent = result.userText
+		mainDiv.appendChild(link)
+		mainDiv.appendChild(line_break)
+	}
+	//document.getElementById('convertedUrl').textContent = result.userText
 
 });
 
 //function to convert mobile link to web link
-link.onclick = function() {
+convertLink.onclick = function() {
 	let defaultLink = "https://item.taobao.com/item.htm?id="
 	let arrayLink = document.getElementById('link').value.split(",")
 	let preURL = document.getElementById('link').value
 	let id = "";
+	let validLinks = []
 
 	let mainDiv = document.getElementById("newLinks")
 	for(let i = 0; i < arrayLink.length; i++) {
 		if(!arrayLink[i].includes("id=")) {
 			let line_break = document.createElement("BR")
-			let newLink = document.createElement("button")
+			let newLink = document.createElement("a")
 			newLink.className = "btn btn-link text-danger"
 			newLink.innerText = arrayLink[i]
 			mainDiv.appendChild(newLink)
 			mainDiv.appendChild(line_break)
 		}
-		else {
+		else {														
+			
 			let index = arrayLink[i].indexOf("id=") + 3
 			id = arrayLink[i].substring(index, index + 12)
 			let line_break = document.createElement("BR")
-			let newLink = document.createElement("button")
-			newLink.className = "btn btn-link"
-			newLink.innerText = defaultLink + id
-			mainDiv.appendChild(newLink)
+
+			let link = document.createElement("a")
+			link.href = defaultLink + id
+			link.textContent = defaultLink + id
+			link.className = "btn btn-link"
+			link.id = "link_" + i
+			link.addEventListener("click", function() {
+				chrome.tabs.create({active: true, url: link.textContent});
+			})
+ 
+			mainDiv.appendChild(link)
 			mainDiv.appendChild(line_break)
+
+			validLinks.push(defaultLink + id)
 		}
 		
 	}
 
 	console.log(arrayLink)
 
-	//if link entered does not contain an id query
-	if(!preURL.includes("id=")) {
-		//document.getElementById('errorMessage').textContent = "Enter Valid Link"
-	}
-	else {
-		//document.getElementById('errorMessage').textContent = ""
-
-		//let index = preURL.indexOf("id=") + 3
-		//id = preURL.substring(index, index + 12)
-		//document.getElementById('convertedUrl').textContent = defaultLink + id;
-	}
-
-	document.getElementById('link').value = ''
-	//document.getElementById('convertedUrl').textContent = defaultLink;
-	//document.getElementById('linkTab').innerHTML += `<h2 name = "cl">${10}</h2>`;
-	chrome.storage.sync.set({userText: document.getElementById('convertedUrl').textContent}, function() {
+	chrome.storage.sync.set({userText: validLinks}, function() {
           
     });
-
-	//use textContent to change text
 }
 
 //when clear button id clicked
 clear.onclick = function() {
 	chrome.storage.sync.remove(['userText'], function() {
-		document.getElementById("convertedUrl").textContent = ""
 		document.getElementById("link").value = ""
 		document.getElementById("errorMessage").textContent = ""
+
+		let linkDivChild = document.getElementById("newLinks").children
+		for(let i = 0; i < linkDivChild.length; i++) {
+			linkDivChild[i].remove()
+		}
 	})
 }
 
-//open links
-document.addEventListener('DOMContentLoaded', function() {
-   let openTab = document.getElementById("linkTab");
-   //simpler version instrad of using callback/async method
-   openTab.onclick = function() {
-   		chrome.tabs.create({active: true, url: openTab.textContent});
-   }
-
-   //y.addEventListener("click", function() {
-   	//	chrome.tabs.create({active: true, url: y.textContent});
-   //});
-})
 //https://world.taobao.com/item/547456053621.htm?fromSite=main
-function openIndex() {
- chrome.tabs.create({active: true, url: control.textContent});
-}
