@@ -1,5 +1,7 @@
 let convertLink = document.getElementById('convertButton')
 let clear = document.getElementById('clearButton')
+let history = document.getElementById('historyButton')
+
 //getting the converted links that were stored in the bundle for when the extensions closed and reopens
 chrome.storage.sync.get(['userText'], function(result) {
 	console.log(result)
@@ -129,6 +131,25 @@ clear.onclick = function() {
 	clearLinkDiv()
 }
 
+//when the history button is clicked
+history.onclick = function() {
+	chrome.tabs.create({
+            url: chrome.extension.getURL('history.html'),
+            active: false
+        }, function(tab) {
+            // After the tab has been created, open a window to inject the tab
+            chrome.windows.create({
+                tabId: tab.id,
+                type: 'popup',
+                focused: true,
+                width: 600,
+                height: 600
+                // incognito, top, left, ...
+            });
+        });
+}
+
+
 //saves the text area value if extension pop up is still closed
 window.onblur = function(){
 	chrome.storage.sync.set({textArea: document.getElementById("linkArea").value}, function() {
@@ -136,7 +157,3 @@ window.onblur = function(){
     });
 }
 
-
-
-
-//MAKE FUNCTIONAILITY WHERE IT SAVES EVERY SINGLE LINK CONVERTED AND A BUTTON TO LIST THEM ALL OR DELETE THEM ALL
