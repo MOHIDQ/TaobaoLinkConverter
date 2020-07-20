@@ -2,6 +2,8 @@ let convertLink = document.getElementById('convertButton')
 let clear = document.getElementById('clearButton')
 let history = document.getElementById('historyButton')
 
+let everyValidLink = []
+
 //getting the converted links that were stored in the bundle for when the extensions closed and reopens
 chrome.storage.sync.get(['userText'], function(result) {
 	console.log(result)
@@ -92,6 +94,7 @@ convertLink.onclick = function() {
 			mainDiv.appendChild(line_break)
 
 			validLinks.push(defaultLink + id)
+			everyValidLink.push(defaultLink + id)
 		}
 		//example of this condition would be https://world.taobao.com/item/547456053621.htm?fromSite=main
 		else if (arrayLink[i].includes("item/")) {
@@ -112,6 +115,7 @@ convertLink.onclick = function() {
 			mainDiv.appendChild(line_break)
 
 			validLinks.push(defaultLink + id)
+			everyValidLink.push(defaultLink + id)
 		}
 
 	}
@@ -133,7 +137,12 @@ clear.onclick = function() {
 
 //when the history button is clicked
 history.onclick = function() {
-	chrome.tabs.create({
+	let str = ""
+	for(let i = 0; i < everyValidLink.length; i++) {
+		str = str + everyValidLink[i] + "\n"
+	}
+	alert(str);
+	/*chrome.tabs.create({
             url: chrome.extension.getURL('history.html'),
             active: false
         }, function(tab) {
@@ -146,8 +155,9 @@ history.onclick = function() {
                 height: 600
                 // incognito, top, left, ...
             });
-        });
+        }); */
 }
+
 
 
 //saves the text area value if extension pop up is still closed
