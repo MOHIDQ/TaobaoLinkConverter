@@ -23,20 +23,34 @@
 	<body>
 		<h2 id = "top" class="text-success" style="font-size:28px" >TAOBAO LINK CONVERTER</h2>
 
-		<!-- <input class = "inputLink" type="text" id="link" placeholder="Enter Link"> <br></br> -->
-		
-  		<textarea class="form-control" rows="7" cols= "0" id="linkArea" placeholder = "Enter links here. Comma seperate multiple links. Links that appear red after conversion means they could not be converted" style="resize: none;"></textarea> <br>
-  		<div style="text-align: center;" >
-			<button id = "convertButton" class="btn btn-success" >CONVERT</button>
-			<button id = "clearButton" class="btn btn-danger">CLEAR</button>
-		</div>
-		<br>
-		<div id="newLinks" style="text-align: center;">
+		<div id = "linkCovertSection"> 
+			<!-- <input class = "inputLink" type="text" id="link" placeholder="Enter Link"> <br></br> -->
 			
-		</div>
-		<br>
+	  		<textarea class="form-control" rows="7" cols= "0" id="linkArea" placeholder = "Enter links here. Comma seperate multiple links. Links that appear red after conversion means they could not be converted" style="resize: none;"></textarea> <br>
+	  		<div style="text-align: center;" >
+				<button id = "convertButton" class="btn btn-success" >CONVERT</button>
+				<button id = "clearButton" class="btn btn-danger">CLEAR</button>
+			</div>
+			<br>
+			<div id="newLinks" style="text-align: center;">
+				
+			</div>
+			<br>
 
-		<a id = "historyButton" class = "btn btn-link text-muted" style="position: fixed; right: 0; bottom: 0;">History</a>
+			<a id = "historyButton" class = "btn btn-link text-muted" style="position: fixed; right: 0; bottom: 0;">History</a>
+		</div>
+
+		<div id = "historySection" style="display: none;">
+
+			<div id = "allLinks" style="text-align: center;"> 
+
+			</div>
+
+
+			<a id = "backButton" class = "btn btn-link text-muted" style="position: fixed; right: 0; bottom: 0;">Back</a>
+
+		</div>
+
 
 		
 		<script src="popup.js" ></script>

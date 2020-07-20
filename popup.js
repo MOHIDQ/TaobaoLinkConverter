@@ -2,6 +2,7 @@ let convertLink = document.getElementById('convertButton')
 let clear = document.getElementById('clearButton')
 let history = document.getElementById('historyButton')
 
+
 let everyValidLink = []
 
 //getting the converted links that were stored in the bundle for when the extensions closed and reopens
@@ -139,9 +140,34 @@ clear.onclick = function() {
 history.onclick = function() {
 	let str = ""
 	for(let i = 0; i < everyValidLink.length; i++) {
-		str = str + everyValidLink[i] + "\n"
+		str = str + everyValidLink[i] + "\n\n"
 	}
-	alert(str);
+
+	//removing display for convert links divs
+	let convertSection = document.getElementById("linkCovertSection")
+	convertSection.style.display = "none"
+
+	//showing the hisory links section
+	let historySection = document.getElementById("historySection")
+	historySection.style.display = "block"
+
+	let historyLinkDiv = document.getElementById("allLinks")
+	for(let i = 0; i < everyValidLink.length; i++) {
+		let line_break = document.createElement("BR")
+		let link = document.createElement("a")
+		link.href = everyValidLink[i]
+		link.textContent = everyValidLink[i]
+		link.className = "btn btn-link"
+		link.id = "hisLlink_" + i
+		link.addEventListener("click", function() {
+			chrome.tabs.create({active: true, url: link.textContent});
+		})
+
+		historyLinkDiv.appendChild(link)
+		historyLinkDiv.appendChild(line_break)
+	}
+
+
 	/*chrome.tabs.create({
             url: chrome.extension.getURL('history.html'),
             active: false
