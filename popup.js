@@ -1,7 +1,7 @@
 let convertLink = document.getElementById('convertButton')
 let clear = document.getElementById('clearButton')
 let history = document.getElementById('historyButton')
-
+let back = document.getElementById('backButton')
 
 let everyValidLink = []
 
@@ -120,6 +120,19 @@ convertLink.onclick = function() {
 		}
 
 	}
+	chrome.storage.sync.get(['allLinks'], function(result) {
+		if(result.allLinks !== undefined) {
+			console.log(result)
+			document.getElementById("linkArea").value = result.textArea
+			let newArr = result.allLinks.concat(validLinks)
+			chrome.storage.sync.set({allLinks: newArr}, function() {
+				
+	    	});
+		}
+	//document.getElementById('convertedUrl').textContent = result.userText
+
+	});
+
 
 	//saves the stored links 
 	chrome.storage.sync.set({userText: validLinks}, function() {
@@ -138,34 +151,57 @@ clear.onclick = function() {
 
 //when the history button is clicked
 history.onclick = function() {
-	let str = ""
-	for(let i = 0; i < everyValidLink.length; i++) {
-		str = str + everyValidLink[i] + "\n\n"
-	}
+	let newArr = []
+	chrome.storage.sync.get(null, function(result) {
+		//case if the history key for all the links does not exist, then create it
+		if(result.allLinks === undefined) {
+			chrome.storage.sync.set({allLinks: everyValidLink}, function() {
+    
+    		});
+		}
+		//if the key for all links history already exists
+		else {
+			chrome.storage.sync.get(['allLinks'], function(result) {
+		if(result.allLinks !== undefined) {
+			newArr = result.allLinks
 
-	//removing display for convert links divs
-	let convertSection = document.getElementById("linkCovertSection")
-	convertSection.style.display = "none"
+	    	//removing display for convert links divs
+			let convertSection = document.getElementById("linkCovertSection")
+			convertSection.style.display = "none"
 
-	//showing the hisory links section
-	let historySection = document.getElementById("historySection")
-	historySection.style.display = "block"
+			//showing the hisory links section
+			let historySection = document.getElementById("historySection")
+			historySection.style.display = "block"
+			//clearing the history links div
+			let div = document.getElementById("allLinks")
+			while(div.firstChild){
+			    div.removeChild(div.firstChild);
+			}
 
-	let historyLinkDiv = document.getElementById("allLinks")
-	for(let i = 0; i < everyValidLink.length; i++) {
-		let line_break = document.createElement("BR")
-		let link = document.createElement("a")
-		link.href = everyValidLink[i]
-		link.textContent = everyValidLink[i]
-		link.className = "btn btn-link"
-		link.id = "hisLlink_" + i
-		link.addEventListener("click", function() {
-			chrome.tabs.create({active: true, url: link.textContent});
-		})
+			let historyLinkDiv = document.getElementById("allLinks")
+			console.log(newArr.length)
+			for(let i = 0; i < newArr.length; i++) {
+				let line_break = document.createElement("BR")
+				let link = document.createElement("a")
+				link.href = newArr[i]
+				link.textContent = newArr[i]
+				link.className = "btn btn-link"
+				link.id = "hisLlink_" + i
+				link.addEventListener("click", function() {
+					chrome.tabs.create({active: true, url: link.textContent});
+				})
 
-		historyLinkDiv.appendChild(link)
-		historyLinkDiv.appendChild(line_break)
-	}
+				historyLinkDiv.appendChild(link)
+				historyLinkDiv.appendChild(line_break)
+			}
+		}
+
+	});
+		}
+	})
+	
+
+
 
 
 	/*chrome.tabs.create({
@@ -184,6 +220,16 @@ history.onclick = function() {
         }); */
 }
 
+back.onclick = function() {
+	//removing display for convert links divs
+	let convertSection = document.getElementById("linkCovertSection")
+	convertSection.style.display = "block"
+
+	//showing the hisory links section
+	let historySection = document.getElementById("historySection")
+	historySection.style.display = "none"
+}
+
 
 
 //saves the text area value if extension pop up is still closed
@@ -191,5 +237,18 @@ window.onblur = function(){
 	chrome.storage.sync.set({textArea: document.getElementById("linkArea").value}, function() {
     
     });
+    chrome.storage.sync.get(['allLinks'], function(result) {
+		if(result.allLinks !== undefined) {
+			console.log(result)
+			document.getElementById("linkArea").value = result.textArea
+			let newArr = result.allLinks.concat(everyValidLink)
+			chrome.storage.sync.set({allLinks: newArr}, function() {
+
+	    	});
+		}
+	//document.getElementById('convertedUrl').textContent = result.userText
+
+	});
+    
 }
 
