@@ -33,6 +33,9 @@ chrome.storage.sync.get(['textArea'], function(result) {
 	if(result.textArea !== undefined) {
 		console.log(result)
 		document.getElementById("linkArea").value = result.textArea
+		if(document.getElementById("linkArea").value === "undefined") {
+			document.getElementById("linkArea").value = ""
+		}
 	}
 	//document.getElementById('convertedUrl').textContent = result.userText
 
@@ -69,7 +72,7 @@ convertLink.onclick = function() {
 
 	//checking each of  the links to see if valid or not
 	for(let i = 0; i < arrayLink.length; i++) {
-		if(!arrayLink[i].includes("id=") && !arrayLink[i].includes("item/") && arrayLink[i] !== "") {
+		if(!arrayLink[i].includes("id=") && !arrayLink[i].includes("item/") && arrayLink[i] !== "" && !arrayLink[i].includes("id%")) {
 			let line_break = document.createElement("BR")
 			let newLink = document.createElement("a")
 			newLink.className = "btn btn-link text-danger"
@@ -118,12 +121,34 @@ convertLink.onclick = function() {
 			validLinks.push(defaultLink + id)
 			everyValidLink.push(defaultLink + id)
 		}
+		//example of superbuy link would be: https://m . superbuy . com/en/goodsdetail/?url=https%3A%2F%2Fitem . taobao . com%2Fitem . htm%3Fid%3D600967667601
+		else if(arrayLink[i].includes("id%")) {
+			let index = arrayLink[i].indexOf("id%") + 5 //+ 3 + 2 since we dont need the first two digits
+			id = arrayLink[i].substring(index, index + 12)
 
+			let line_break = document.createElement("BR")
+
+			let link = document.createElement("a")
+			link.href = defaultLink + id
+			link.textContent = defaultLink + id
+			link.className = "btn btn-link"
+			link.id = "link_" + i
+			link.addEventListener("click", function() {
+				chrome.tabs.create({active: true, url: link.textContent});
+			})
+ 
+			mainDiv.appendChild(link)
+			mainDiv.appendChild(line_break)
+
+			validLinks.push(defaultLink + id)
+			everyValidLink.push(defaultLink + id)
+
+		}
 	}
 	chrome.storage.sync.get(['allLinks'], function(result) {
 		if(result.allLinks !== undefined) {
 			console.log(result)
-			document.getElementById("linkArea").value = result.textArea
+			//document.getElementById("linkArea").value = result.textArea
 			let newArr = result.allLinks.concat(validLinks)
 			chrome.storage.sync.set({allLinks: newArr}, function() {
 				
@@ -199,25 +224,7 @@ history.onclick = function() {
 	});
 		}
 	})
-	
 
-
-
-
-	/*chrome.tabs.create({
-            url: chrome.extension.getURL('history.html'),
-            active: false
-        }, function(tab) {
-            // After the tab has been created, open a window to inject the tab
-            chrome.windows.create({
-                tabId: tab.id,
-                type: 'popup',
-                focused: true,
-                width: 600,
-                height: 600
-                // incognito, top, left, ...
-            });
-        }); */
 }
 
 back.onclick = function() {
@@ -234,13 +241,14 @@ back.onclick = function() {
 
 //saves the text area value if extension pop up is still closed
 window.onblur = function(){
+	console.log(document.getElementById("linkArea").value)
 	chrome.storage.sync.set({textArea: document.getElementById("linkArea").value}, function() {
-    
+    	
     });
     chrome.storage.sync.get(['allLinks'], function(result) {
 		if(result.allLinks !== undefined) {
 			console.log(result)
-			document.getElementById("linkArea").value = result.textArea
+			//document.getElementById("linkArea").value = result.textArea
 			let newArr = result.allLinks.concat(everyValidLink)
 			chrome.storage.sync.set({allLinks: newArr}, function() {
 

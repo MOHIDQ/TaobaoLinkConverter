@@ -1,7 +1,7 @@
 //defining context menu properties
 let contextMenuItem = {
 	"id": "Tlink",
-	"title": "Go To " + "%s",
+	"title": "Go to " + "%s",
 	"contexts": ["selection"]
 }
 
@@ -11,6 +11,7 @@ function convertLink(preUrl) {
 }
 
 function goToLink(preUrl) {
+	console.log(preUrl)
 	let defaultLink = "https://item.taobao.com/item.htm?id="
 
 	//let newURL = convertLink(preUrl)

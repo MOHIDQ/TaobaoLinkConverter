@@ -13,6 +13,11 @@
 		"persistent": false
 	},
 
+	"icons": { "16": "linkLogo16.png",
+			   "48": "linkLogo48.png",
+			   "128": "linkLogo128.png"
+             },
+
 	"permissions": [
 		"contextMenus",
 		"storage",
