@@ -2,6 +2,7 @@ let convertLink = document.getElementById('convertButton')
 let clear = document.getElementById('clearButton')
 let history = document.getElementById('historyButton')
 let back = document.getElementById('backButton')
+let currency = document.getElementById('currencyButton')
 
 let everyValidLink = []
 
@@ -227,6 +228,7 @@ history.onclick = function() {
 
 }
 
+//when the back button is clicked on the main page
 back.onclick = function() {
 	//removing display for convert links divs
 	let convertSection = document.getElementById("linkCovertSection")
@@ -235,6 +237,21 @@ back.onclick = function() {
 	//showing the hisory links section
 	let historySection = document.getElementById("historySection")
 	historySection.style.display = "none"
+}
+
+//when the currency conversion button is clicked
+currency.onclick = function() {
+	//removing display for convert links divs
+	let convertSection = document.getElementById("linkCovertSection")
+	convertSection.style.display = "none"
+
+	//removing the hisory links section
+	let historySection = document.getElementById("historySection")
+	historySection.style.display = "none"
+
+	//showing the currency converter section
+	let currencySection = document.getElementById('currencySection')
+	currencySection.style.display = "block"
 }
 
 
