@@ -327,7 +327,7 @@ function currencyOneChange() {
 	let exchangeTo = document.getElementById("currency2").options[document.getElementById("currency2").selectedIndex].value
 	let exchangeFrom = document.getElementById("currency1").options[document.getElementById("currency1").selectedIndex].value
 
-	if(exchangeTo !== "") {
+	if(exchangeTo !== "" && exchangeFrom !== "") {
 		if(exchangeTo === exchangeFrom) {
 			document.getElementById("conversion").innerHTML = "= $" + document.getElementById("amount1").value
 
@@ -344,7 +344,7 @@ function currencyTwoChange() {
 	let exchangeTo = document.getElementById("currency2").options[document.getElementById("currency2").selectedIndex].value
 	let exchangeFrom = document.getElementById("currency1").options[document.getElementById("currency1").selectedIndex].value
 
-	if(exchangeTo !== "") {
+	if(exchangeTo !== "" && exchangeFrom !== "") {
 		if(exchangeTo === exchangeFrom) {
 			document.getElementById("conversion").innerHTML = "= $" + document.getElementById("amount1").value
 
@@ -361,7 +361,7 @@ document.getElementById("amount1").addEventListener("input", function() {
 	let exchangeTo = document.getElementById("currency2").options[document.getElementById("currency2").selectedIndex].value
 	let exchangeFrom = document.getElementById("currency1").options[document.getElementById("currency1").selectedIndex].value
 
-	if(exchangeTo !== "") {
+	if(exchangeTo !== "" && exchangeFrom !== "") {
 		if(exchangeTo === exchangeFrom) {
 			document.getElementById("conversion").innerHTML = "= $" + document.getElementById("amount1").value
 
