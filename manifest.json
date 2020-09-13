@@ -8,10 +8,7 @@
 		"default_popup": "popup.html"
 	},
 
-	"background": {
-		"scripts": ["eventPage.js, currency.js"],
-		"persistent": false
-	},
+	
 
 	"icons": { "16": "linkLogo16.png",
 			   "48": "linkLogo48.png",

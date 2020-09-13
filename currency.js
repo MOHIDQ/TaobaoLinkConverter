@@ -14,12 +14,7 @@ function convertCurrency(base, inputType) {
 	      response.json().then(function(data) {
 	        //console.log(data);
 	        exchangeRate = data
-	        if(inputType === 1) {
-	        	currencyOneChange()
-	        }
-	        else if (inputType === 2) {
-	        	currencyTwoChange()
-	        }
+	        currencyOneChange()
 	      });
 	    }
 	  )
@@ -33,8 +28,7 @@ function convertCurrency(base, inputType) {
 document.getElementById("currency1").addEventListener("change", function() {
 	//if the selected option is the default value
 	if(document.getElementById("currency1").options[document.getElementById("currency1").selectedIndex].value === "") {
-		document.getElementById("amount1").value = 0
-		document.getElementById("conversion").innerHTML = ""
+		document.getElementById("conversion").innerHTML = "= $0.00"
 	}
 	else {
 		convertCurrency(document.getElementById("currency1").options[document.getElementById("currency1").selectedIndex].value, 1)
@@ -43,8 +37,14 @@ document.getElementById("currency1").addEventListener("change", function() {
 })
 
 document.getElementById("currency2").addEventListener("change", function() {
-	convertCurrency(document.getElementById("currency1").options[document.getElementById("currency1").selectedIndex].value, 2)
-})
+//if the selected option is the default value
+	if(document.getElementById("currency2").options[document.getElementById("currency2").selectedIndex].value === "") {
+		document.getElementById("conversion").innerHTML = "= $0.00"
+	}
+	else {
+		convertCurrency(document.getElementById("currency1").options[document.getElementById("currency1").selectedIndex].value, 1)
+
+	}})
 
 
 //function when the currency drop down 1 changes

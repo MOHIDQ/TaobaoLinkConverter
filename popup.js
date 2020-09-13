@@ -1,9 +1,11 @@
+//getting buttons
 let convertLink = document.getElementById('convertButton')
 let clear = document.getElementById('clearButton')
 let history = document.getElementById('historyButton')
 let back = document.getElementById('backButton')
 let currency = document.getElementById('currencyButton')
 let backCurrency = document.getElementById('backButtonCurrency')
+let clearAllHistory = document.getElementById('clearAllHistory')
 
 let everyValidLink = []
 
@@ -201,13 +203,30 @@ history.onclick = function() {
 			historySection.style.display = "block"
 			//clearing the history links div
 			let div = document.getElementById("allLinks")
-			while(div.firstChild){
-			    div.removeChild(div.firstChild);
-			}
+			div.innerHTML = ""
+
 
 			let historyLinkDiv = document.getElementById("allLinks")
 			console.log(newArr.length)
+			//create the elments to showcase each link in history tab
 			for(let i = 0; i < newArr.length; i++) {
+				//creating the div to hold all the links
+				let newDiv = document.createElement("DIV")
+				newDiv.id = "histDiv" + i
+
+
+				let btn = document.createElement("button")
+				btn.id = "del" + i
+				btn.className = "btn btn-light btn-sm"
+				btn.innerHTML = "X"
+				//event listener that deletes the link
+				btn.addEventListener("click", function() {
+					
+	    			resetDiv(btn, newArr)
+
+					
+				});
+
 				let line_break = document.createElement("BR")
 				let link = document.createElement("a")
 				link.href = newArr[i]
@@ -218,8 +237,13 @@ history.onclick = function() {
 					chrome.tabs.create({active: true, url: link.textContent});
 				})
 
-				historyLinkDiv.appendChild(link)
-				historyLinkDiv.appendChild(line_break)
+				newDiv.appendChild(btn)
+				newDiv.appendChild(link)
+				newDiv.appendChild(line_break)
+				 historyLinkDiv.appendChild(newDiv)
+				//historyLinkDiv.appendChild(btn)
+				//historyLinkDiv.appendChild(link)
+				//historyLinkDiv.appendChild(line_break)
 			}
 		}
 
@@ -227,6 +251,33 @@ history.onclick = function() {
 		}
 	})
 
+}
+
+//button listener that deletes all links stored in history
+clearAllHistory.onclick = function() {
+	chrome.storage.sync.set({allLinks: []}, function() {
+		let historyLinkDiv = document.getElementById("allLinks")
+		historyLinkDiv.innerHTML = ''
+	});
+}
+
+function resetDiv(button, newArr) {
+	let ele = document.getElementById("histDiv" + button.id.match(/\d+/)[0])
+	ele.remove()
+	let index = parseInt(button.id.match(/\d+/)[0])
+	console.log("deleted: " + index)
+	newArr.splice(index, 1);
+	console.log(newArr)
+	chrome.storage.sync.set({allLinks: newArr}, function() {
+		for(let i = 0; i < newArr.length; i++) {
+			 deleteBtns = document.querySelectorAll('[id^=del]');
+			deleteBtns[i].id = "del" + i
+			let histDivs = document.querySelectorAll('[id^=histDiv]');
+			histDivs[i].id = "histDiv" + i
+		}
+		
+
+	});
 }
 
 //when the back button is clicked on the main page
@@ -285,9 +336,9 @@ window.onblur = function(){
 			console.log(result)
 			//document.getElementById("linkArea").value = result.textArea
 			let newArr = result.allLinks.concat(everyValidLink)
-			chrome.storage.sync.set({allLinks: newArr}, function() {
+			//chrome.storage.sync.set({allLinks: newArr}, function() {
 
-	    	});
+	    	//});
 		}
 	//document.getElementById('convertedUrl').textContent = result.userText
 
